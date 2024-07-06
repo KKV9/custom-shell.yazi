@@ -1,6 +1,6 @@
 # shell.yazi
 
-Use any shell for your yazi shell prompt.
+Use any shell as the default yazi shell prompt.
 
 # Installation
 
@@ -59,6 +59,6 @@ desc = "Blocking echo command with fish"
 
 # Features
 
-- Open any shell as your default shell.
+- Open any shell as your default yazi shell.
 - Usage of aliases is supported in most shells (interactive mode).
 - Supports default yazi shell arguments `run` `--confirm` and `--block`
