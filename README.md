@@ -32,6 +32,18 @@ run = "plugin shell --args='auto --block'"
 desc = "Default shell with blocking"
 ```
 
+- If you want to use powershell on windows, add this instead:
+```toml
+[[manager.prepend_keymap]]
+on = [ ";" ]
+run = "plugin custom-shell --args=pwsh"
+desc = "Default shell"
+[[manager.prepend_keymap]]
+on = [ ":" ]
+run = "plugin shell --args='pwsh --block'"
+desc = "Default shell with blocking"
+```
+
 ### More example use cases
 
 ```toml
@@ -60,5 +72,6 @@ desc = "Blocking echo command with fish"
 # Features
 
 - Open any shell as your default yazi shell.
+- When shell is set to `auto` or unspecified, will read from $SHELL environment variable.
 - Usage of aliases is supported in most shells (interactive mode).
 - Supports default yazi shell arguments `run` `--confirm` and `--block`
