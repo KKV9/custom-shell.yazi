@@ -6,22 +6,22 @@ return {
 		local value_string = ""
 		-- Block and confirm command flags
 		local block = false
-		local confirm = true
+		local confirm = false
 
 		-- Parse command flags
 		for idx, item in ipairs(args) do
-			if item == "--block" or item == "-b" then
+			if item == "--block" then
 				block = true
-			elseif item == "--confirm" or item == "-c" then
-				confirm = false
-			elseif idx ~= 1 then
+			elseif item == "--confirm" then
+				confirm = true
+			elseif idx ~= 1 and not item:match("^%-%-") then
 				value_string = value_string .. " " .. item
 			end
 		end
 
 		-- If custom shell is chosen, use it
-		if args[1] and not args[1]:match("auto") and not args[1]:match("^%-") then
-			shell_value = args[1]:lower() == "kornshell" and "ksh" or args[1]
+		if args[1] and not args[1]:match("auto") and not args[1]:match("^%-%-") then
+			shell_value = args[1]
 		end
 
 		-- Change prompt title if block is selected
