@@ -1,111 +1,68 @@
 # Custom-shell.yazi
 
-A yazi plugin to open your custom-shell as your default yazi Shell.
+Use any shell for your yazi shell prompt.
 
-## Previews
+## Preview
 
 https://github.com/AnirudhG07/custom-shell.yazi/assets/146579014/1cd6ab98-5b79-4ee8-b59a-dbee053edad5
-
-## Requirements
-
-Yazi version 0.2.5 or higher. And of course, your custom-shell as default shell.
 
 # Installation
 
 ```bash
 ## For linux and MacOS
-git clone https://github.com/AnirudhG07/custom-shell.yazi.git ~/.config/yazi/plugins/custom-shell.yazi
+git clone https://github.com/KKV9/shell.yazi.git ~/.config/yazi/plugins/custom-shell.yazi
 
 ## For Windows
-git clone https://github.com/AnirudhG07/custom-shell.yazi.git %AppData%\yazi\config\plugins\custom-shell.yazi
+git clone https://github.com/KKV9/shell.yazi.git %AppData%\yazi\config\plugins\custom-shell.yazi
+
+## Yazi plugin manager
+ya pack -a KKV9/shell
 ```
+## Usage
 
-Windows user's should check the init.lua file to make sure the paths used are correct.
 
-# Usage
+### Quickstart
 
-## Modes
-
-There are 2 ways you can set your custom-shell.
-
-- The `auto` mode automatically sets the custom-shell to the value of `$SHELL` environment variable.
-- The `shell_name` sets the custom-shell to the shell you want to use.
-
-| **Mode** | **Description**                           |
-| -------- | ----------------------------------------- |
-| `auto`   | Automatically set custom-shell = `$SHELL` |
-| `zsh`    | Set custom-shell = `zsh`                  |
-| `bash`   | Set custom-shell = `bash`                 |
-| `fish`   | Set custom-shell = `fish`  <°))><         |
-| `nu`     | Set custom-shell = `nu`                   |
-| `ksh`    | Set custom-shell = `ksh` or Kornshell     |
-
-Similarly you can input the name of the shell you want to use.
-<br>
-These commands uses the below command to run the shells-
-
-```bash
-custom_shell -i -c "command";exit
-```
-
-## Keymapping
-
-Add this to your `keymap.toml` file:
-
-To use the `auto` mode, you can set the keymappings as-
+- Add this to your `keymap.toml`:
 
 ```toml
 [[manager.prepend_keymap]]
 on = [ ";" ]
 run = "plugin custom-shell"
-desc = "custom-shell using default shell"
-```
-
-To use the `block` mode, you can set the keymappings as-
-
-```toml
+desc = "Default shell"
 [[manager.prepend_keymap]]
 on = [ ":" ]
-run = "plugin custom-shell --args='auto --block'"
-desc = "custom-shell with blocking"
+run = "plugin shell --args='auto --block'"
+desc = "Default shell with blocking"
 ```
 
-To choose a specific shell, you can set the keymappings as-
+### More example use cases
 
 ```toml
 [[manager.prepend_keymap]]
 on = [ ";" ]
-run = "plugin custom-shell --args=zsh"
-desc = "custom-shell with zsh"
+run = "plugin shell --args=zsh"
+desc = "zsh shell"
 ```
-
-To type a command, you can set the keymappings as-
 
 ```toml
 [[manager.prepend_keymap]]
-on = [ ";" ]
-run = "plugin custom-shell --args='nu \"ls | sort-by \" --block'"
-desc = "Run ls table in nu sort by ...?"
+on = [ ",", "p" ]
+run = "plugin shell --args='nu \"ls | sort-by \" --block'"
+desc = "ls table in nu sort by ...?"
 ```
-
-To run a specific command in a specific shell, you can set the keymappings as-
 
 ```toml
 [[manager.prepend_keymap]]
-on = [ ";" ]
-run = "plugin custom-shell --args='fish \"echo example command with --block and --confirm flags ; read c\" --block --confirm'"
-desc = "Run a blocking echo command with fish"
+on = [ "c", "e" ]
+run = "plugin shell --args='fish \"echo example command with --block and --confirm flags ; read c\" --block --confirm'"
+desc = "Blocking echo command with fish"
 ```
 
-**NOTE:** The first argument must be either "auto" or the shell name e.g. "fish". Multiple arguments must be quoted with single quotes.
+**NOTE:** The first argument must be either "auto" or the shell name e.g. "fish". Multiple yazi arguments must be quoted with single quotes.
 
 # Features
 
-- Open your custom-shell as your default shell like zsh, <°))>< [fish](https://github.com/AnirudhG07/fish.yazi), bash, etc.
-- Usage of aliases is supported except in nushell.
-- When using 'auto' mode, if you change your default shell, it will automatically change the custom-shell to the new default shell.
-- If your shell runs extra commands like printing texts, taskwarrior, newsupdates, etc. when you open the shell, they will not hinder into it's functioning.
-
-## Acknowledgement
-
-This code is referenced from issue [#1206](https://github.com/sxyazi/yazi/issues/1206) and PR [#84](https://github.com/yazi-rs/yazi-rs.github.io/pull/84) I raised on the repositories. Thank you to the maintainers of sxyazi/yazi for the help.
+- Open any shell as your default shell.
+- Usage of aliases is supported in most shells (interactive mode).
+- Supports default yazi shell flags `run` `--confirm` and `--block`
