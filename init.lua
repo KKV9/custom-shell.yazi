@@ -1,7 +1,7 @@
 return {
 	entry = function(_, args)
 		-- Always default to automatic shell
-		local shell_value = os.getenv("SHELL"):match(".*/(.*)")
+		local shell_value = os.getenv("SHELL"):match(".*/(.*)") or "sh"
 		-- Store text box entry value
 		local value_string = ""
 		-- Block and confirm command flags
