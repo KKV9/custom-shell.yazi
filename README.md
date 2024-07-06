@@ -6,10 +6,10 @@ Use any shell as the default yazi shell prompt.
 
 ```bash
 ## For linux and MacOS
-git clone https://github.com/KKV9/shell.yazi.git ~/.config/yazi/plugins/custom-shell.yazi
+git clone https://github.com/KKV9/shell.yazi.git ~/.config/yazi/plugins/shell.yazi
 
 ## For Windows
-git clone https://github.com/KKV9/shell.yazi.git %AppData%\yazi\config\plugins\custom-shell.yazi
+git clone https://github.com/KKV9/shell.yazi.git %AppData%\yazi\config\plugins\shell.yazi
 
 ## Yazi plugin manager
 ya pack -a KKV9/shell
