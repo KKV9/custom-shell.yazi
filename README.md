@@ -82,6 +82,8 @@ desc = "Blocking echo command with fish"
 ## fish
  - `$0` or `$HOV` hovered file
  - `$argv` or `$ARGS` list of selected files
+ - `$argv[n]` The N-th selected file, starting from 1.
  ## zsh and bash
  - `$HOV` hovered file
  - `$@` or `$*` or `$ARGS` list of selected files
+ - `$n` The N-th selected file, starting from 1.
