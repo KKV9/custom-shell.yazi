@@ -37,22 +37,24 @@ return {
 		end
 
 		-- Execute
-		local exec_string
+		local exec_string = shell_value .. " -i -c "
 		if shell_value == "fish" then
-			exec_string = "args=$@;"
-				.. "fish"
-				.. " -ic "
-				.. string.format(
-					'"set -l argv $args ; set -l ARGS $args ; set -l HOV $0 ; set -l 0 $0 ; %s"',
-					value:gsub("%$", "\\$")
-				)
-		elseif shell_value == "zsh" or shell_value == "bash" then
-			exec_string = "args=$@;"
-				.. shell_value
-				.. " -ic "
-				.. string.format('"set $args; ARGS=$args; HOV=$0; %s"', value:gsub("%$", "\\$"))
+			exec_string = exec_string .. string.format('"set -l 0 $0; %s" $@', value:gsub("%$", "\\$"):gsub('"', '\\"'))
+		elseif
+			shell_value == "zsh"
+			or shell_value == "bash"
+			or shell_value == "ksh"
+			or shell_value == "nsh"
+			or shell_value == "osh"
+			or shell_value == "mksh"
+			or shell_value == "pdksh"
+			or shell_value == "yash"
+			or shell_value == "dash"
+			or shell_value == "sh"
+		then
+			exec_string = exec_string .. string.format('"%s" $0 $@', value:gsub("%$", "\\$"):gsub('"', '\\"'))
 		else
-			exec_string = shell_value .. " -i -c " .. ya.quote(value)
+			exec_string = exec_string .. ya.quote(value)
 		end
 
 		if event == 1 then
@@ -60,7 +62,7 @@ return {
 				exec_string,
 				block = block,
 				orphan = orphan,
-				confirm = true,
+				confirm = false,
 			})
 		end
 	end,
