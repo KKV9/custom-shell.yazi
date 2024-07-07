@@ -1,20 +1,15 @@
 return {
 	entry = function(_, args)
-		-- Always default to automatic shell
-		local shell_value = os.getenv("SHELL"):match(".*/(.*)") or "sh"
-		-- Store text box entry value
-		local value_string = ""
-		-- Block and confirm command flags
-		local block = false
-		local confirm = false
+		-- Define vars
+		local shell_value, value_string, block, confirm, orphan =
+			os.getenv("SHELL"):match(".*/(.*)") or "sh", "", false, false, false
 
 		-- Parse command flags
 		for idx, item in ipairs(args) do
-			if item == "--block" then
-				block = true
-			elseif item == "--confirm" then
-				confirm = true
-			elseif idx ~= 1 and not item:match("^%-%-") then
+			block = item == "--block" and true
+			confirm = item == "--confirm" and true
+			orphan = item == "--orphan" and true
+			if idx ~= 1 and not item:match("^%-%-") then
 				value_string = value_string .. " " .. item
 			end
 		end
@@ -34,7 +29,7 @@ return {
 			value, event = ya.input({
 				title = prompt_title,
 				value = value_string,
-				position = { "top-center", y = 3, w = 40 },
+				position = { "top-center", y = 3, w = 80 },
 			})
 		else
 			value = value_string
@@ -42,10 +37,29 @@ return {
 		end
 
 		-- Execute
+		local exec_string
+		if shell_value == "fish" then
+			exec_string = "args=$@;"
+				.. "fish"
+				.. " -ic "
+				.. string.format(
+					'"set -l argv $args ; set -l ARGS $args ; set -l HOV $0 ; set -l 0 $0 ; %s"',
+					value:gsub("%$", "\\$")
+				)
+		elseif shell_value == "zsh" or shell_value == "bash" then
+			exec_string = "args=$@;"
+				.. shell_value
+				.. " -ic "
+				.. string.format('"set $args; ARGS=$args; HOV=$0; %s"', value:gsub("%$", "\\$"))
+		else
+			exec_string = shell_value .. " -i -c " .. ya.quote(value)
+		end
+
 		if event == 1 then
 			ya.manager_emit("shell", {
-				shell_value .. " -i -c " .. ya.quote(value .. "; exit", true),
+				exec_string,
 				block = block,
+				orphan = orphan,
 				confirm = true,
 			})
 		end

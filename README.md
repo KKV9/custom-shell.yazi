@@ -74,4 +74,14 @@ desc = "Blocking echo command with fish"
 - Open any shell as your default yazi shell.
 - When shell is set to `auto` or unspecified, will read from $SHELL environment variable.
 - Usage of aliases is supported in most shells (interactive mode).
-- Supports default yazi shell arguments `run` `--confirm` and `--block`
+- Supports default yazi shell arguments `[run]` `--confirm` and `--block`
+- You can use some of the yazi `[run]` shell variables in fish, zsh and bash. 
+
+# Run variables
+
+## fish
+ - `$0` or `$HOV` hovered file
+ - `$argv` or `$ARGS` list of selected files
+ ## zsh and bash
+ - `$HOV` hovered file
+ - `$@` or `$*` or `$ARGS` list of selected files
