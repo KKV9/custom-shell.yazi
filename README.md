@@ -24,23 +24,11 @@ ya pack -a KKV9/shell
 ```toml
 [[manager.prepend_keymap]]
 on = [ ";" ]
-run = "plugin custom-shell"
+run = "plugin shell"
 desc = "Default shell"
 [[manager.prepend_keymap]]
 on = [ ":" ]
 run = "plugin shell --args='auto --block'"
-desc = "Default shell with blocking"
-```
-
-- If you want to use powershell on windows, add this instead:
-```toml
-[[manager.prepend_keymap]]
-on = [ ";" ]
-run = "plugin custom-shell --args=pwsh"
-desc = "Default shell"
-[[manager.prepend_keymap]]
-on = [ ":" ]
-run = "plugin shell --args='pwsh --block'"
 desc = "Default shell with blocking"
 ```
 
