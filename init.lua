@@ -62,7 +62,7 @@ return {
 				exec_string,
 				block = block,
 				orphan = orphan,
-				confirm = false,
+				confirm = true,
 			})
 		end
 	end,
