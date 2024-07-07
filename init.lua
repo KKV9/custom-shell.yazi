@@ -6,9 +6,13 @@ return {
 
 		-- Parse command flags
 		for idx, item in ipairs(args) do
-			block = item == "--block" and true
-			confirm = item == "--confirm" and true
-			orphan = item == "--orphan" and true
+			if item == "--block" then
+				block = true
+			elseif item == "--confirm" then
+				confirm = true
+			elseif item == "--orphan" then
+				orphan = true
+			end
 			if idx ~= 1 and not item:match("^%-%-") then
 				value_string = value_string .. " " .. item
 			end
