@@ -81,6 +81,6 @@ desc = "Blocking echo command with fish"
 
 | Variable      | Shells        | Value              |
 | ------------- | ------------- | ------------------ |
-| $* $@         | Posix only    | Selected or hovered|
-| $argv         | Fish only     | Selected or hovered|
-| $0            | Posix and fish| Hovered            |
+| `$*` or `$@`  | Posix only    | Selected or hovered|
+| `$argv`       | Fish only     | Selected or hovered|
+| `$0`          | Posix and fish| Hovered            |
