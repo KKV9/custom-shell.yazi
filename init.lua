@@ -1,17 +1,23 @@
 return {
 	entry = function(_, args)
 		-- Define vars
-		local shell_value, value_string, block, confirm, orphan =
-			os.getenv("SHELL"):match(".*/(.*)") or "sh", "", false, false, false
+		local shell_value, value_string, is_block, is_confirm, is_orphan, is_windows =
+			"", "", false, false, false, package.config:sub(1, 1) == "\\"
+
+		if is_windows then
+			shell_value = "powershell"
+		else
+			shell_value = os.getenv("SHELL"):match(".*/(.*)") or "sh"
+		end
 
 		-- Parse command flags
 		for idx, item in ipairs(args) do
 			if item == "--block" then
-				block = true
+				is_block = true
 			elseif item == "--confirm" then
-				confirm = true
+				is_confirm = true
 			elseif item == "--orphan" then
-				orphan = true
+				is_orphan = true
 			end
 			if idx ~= 1 and not item:match("^%-%-") then
 				value_string = value_string .. " " .. item
@@ -24,12 +30,12 @@ return {
 		end
 
 		-- Change prompt title if block is selected
-		local prompt_title = block and shell_value:gsub("^%l", string.upper) .. " Shell (block):"
+		local prompt_title = is_block and shell_value:gsub("^%l", string.upper) .. " Shell (block):"
 			or shell_value:gsub("^%l", string.upper) .. " Shell:"
 
 		-- Display prompt if confirm is not selected
 		local value, event
-		if not confirm then
+		if not is_confirm then
 			value, event = ya.input({
 				title = prompt_title,
 				value = value_string,
@@ -57,6 +63,8 @@ return {
 			or shell_value == "sh"
 		then
 			exec_string = exec_string .. string.format('"%s" $0 $@', value:gsub("%$", "\\$"):gsub('"', '\\"'))
+		elseif shell_value == "powershell" then
+			exec_string = shell_value .. " -Command " .. ya.quote(value)
 		else
 			exec_string = exec_string .. ya.quote(value)
 		end
@@ -64,8 +72,8 @@ return {
 		if event == 1 then
 			ya.manager_emit("shell", {
 				exec_string,
-				block = block,
-				orphan = orphan,
+				block = is_block,
+				orphan = is_orphan,
 				confirm = true,
 			})
 		end
