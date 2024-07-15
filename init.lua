@@ -1,8 +1,25 @@
+local selected_or_hovered = ya.sync(function()
+	local tab, paths, first_path = cx.active, "", ""
+	for _, u in pairs(tab.selected) do
+		if paths == "" then
+			paths = ya.quote(tostring(u))
+			first_path = paths
+		else
+			paths = paths .. " " .. ya.quote(tostring(u))
+		end
+	end
+	if paths == "" and tab.current.hovered then
+		paths = ya.quote(tostring(tab.current.hovered.url))
+		first_path = paths
+	end
+	return paths, first_path
+end)
+
 return {
 	entry = function(_, args)
 		-- Define vars
 		local shell_value, value_string, is_block, is_confirm, is_orphan, is_windows =
-			"", "", false, false, false, package.config:sub(1, 1) == "\\"
+			"", "", false, false, false, ya.target_os() == "windows"
 
 		if is_windows then
 			shell_value = "powershell"
@@ -46,10 +63,18 @@ return {
 			event = 1
 		end
 
+		local selected_files, first_selected_file = selected_or_hovered()
+
 		-- Execute
 		local exec_string = shell_value .. " -i -c "
 		if shell_value == "fish" then
-			exec_string = exec_string .. string.format('"set -l 0 $0; %s" $@', value:gsub("%$", "\\$"):gsub('"', '\\"'))
+			exec_string = exec_string
+				.. string.format(
+					'"set -l 0 %s; %s" %s',
+					first_selected_file,
+					value:gsub("%$", "\\$"):gsub('"', '\\"'),
+					selected_files
+				)
 		elseif
 			shell_value == "zsh"
 			or shell_value == "bash"
@@ -62,8 +87,14 @@ return {
 			or shell_value == "dash"
 			or shell_value == "sh"
 		then
-			exec_string = exec_string .. string.format('"%s" $0 $@', value:gsub("%$", "\\$"):gsub('"', '\\"'))
-		elseif shell_value == "powershell" then
+			exec_string = exec_string
+				.. string.format(
+					'"%s" %s %s',
+					value:gsub("%$", "\\$"):gsub('"', '\\"'),
+					first_selected_file,
+					selected_files
+				)
+		elseif shell_value == "powershell" or shell_value == "pwsh" then
 			exec_string = shell_value .. " -Command " .. ya.quote(value)
 		else
 			exec_string = exec_string .. ya.quote(value)

@@ -51,7 +51,7 @@ desc = "ls table in nu sort by ...?"
 ```toml
 [[manager.prepend_keymap]]
 on = [ "c", "e" ]
-run = "plugin shell --args='fish \"echo example command with --block and --confirm flags ; read c\" --block --confirm'"
+run = "plugin shell --args='fish \"echo example command with --block and --confirm flags ; read\" --block --confirm'"
 desc = "Blocking echo command with fish"
 ```
 
@@ -61,10 +61,11 @@ desc = "Blocking echo command with fish"
 
 - Open any shell as your default yazi shell.
 - When shell is set to `auto` or unspecified, will read from $SHELL environment variable.
-- Usage of aliases is supported in most shells (interactive mode).
-- Supports default yazi shell arguments `[run]` `--confirm` and `--block`
-- You can use some of the yazi `[run]` shell variables in fish, zsh and bash. 
-
+- Usage of aliases is supported in most shells.
+- Supports default yazi shell arguments `[run]` `--confirm` and `--block`.
+- `[run]` shell variables/positional arguments supported in fish and posix compliant shells. 
+- Fixes some bugs associated with run variables.
+ 
 # Run variables
 
 | Variable      | Shells        | Value              |
