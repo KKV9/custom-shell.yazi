@@ -18,8 +18,8 @@ end)
 return {
 	entry = function(_, args)
 		-- Define vars
-		local shell_value, value_string, is_block, is_confirm, is_orphan, is_windows =
-			"", "", false, false, false, ya.target_os() == "windows"
+		local shell_value, value_string, is_block, is_confirm, is_orphan, is_drop, is_windows =
+			"", "", false, false, false, false, ya.target_os() == "windows"
 
 		if is_windows then
 			shell_value = "powershell"
@@ -35,11 +35,18 @@ return {
 				is_confirm = true
 			elseif item == "--orphan" then
 				is_orphan = true
+			-- Drop to shell - supports fish only for now
+			elseif item == "--drop" and shell_value == "fish" then
+				is_drop = true
+				is_block = true
+				is_confirm = true
 			end
 			if idx ~= 1 and not item:match("^%-%-") then
 				value_string = value_string .. " " .. item
 			end
 		end
+
+		local selected_files, first_selected_file = selected_or_hovered()
 
 		-- If custom shell is chosen, use it
 		if args[1] and not args[1]:match("auto") and not args[1]:match("^%-%-") then
@@ -63,17 +70,20 @@ return {
 			event = 1
 		end
 
-		local selected_files, first_selected_file = selected_or_hovered()
-
 		-- Execute
-		local exec_string = shell_value .. " -i -c "
+		local exec_string
+		if is_drop then
+			exec_string = shell_value .. " -C "
+		else
+			exec_string = shell_value .. " -ic "
+		end
 		if shell_value == "fish" then
 			exec_string = exec_string
 				.. string.format(
-					'"set -l 0 %s; %s" %s',
+					'"set -g 0 %s;set -g argv %s; %s"',
 					first_selected_file,
-					value:gsub("%$", "\\$"):gsub('"', '\\"'),
-					selected_files
+					selected_files,
+					value:gsub("%$", "\\$"):gsub('"', '\\"')
 				)
 		elseif
 			shell_value == "zsh"
@@ -98,6 +108,10 @@ return {
 			exec_string = shell_value .. " -Command " .. ya.quote(value)
 		else
 			exec_string = exec_string .. ya.quote(value)
+		end
+
+		if is_drop and shell_value == "fish" then
+			exec_string = exec_string .. ";exit 0"
 		end
 
 		if event == 1 then

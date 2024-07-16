@@ -32,6 +32,17 @@ run = "plugin shell --args=--block"
 desc = "Default shell with blocking"
 ```
 
+### Drop to shell in style (fish only)
+
+- Drop to the shell while retaining `[run]` variables
+
+```toml
+[[manager.prepend_keymap]]
+on   = [ "<C-s>" ]
+run  = "plugin shell --args='fish --drop'"
+desc = "Drop to shell"
+```
+
 ### More example use cases
 
 ```toml
@@ -64,7 +75,8 @@ desc = "Blocking echo command with fish"
 - Usage of aliases is supported in most shells.
 - Supports default yazi shell arguments `[run]` `--confirm` and `--block`.
 - `[run]` shell variables/positional arguments supported in fish and posix compliant shells. 
-- Fixes some bugs associated with run variables.
+- Fixes some bugs associated with `[run]` variables.
+- Drop to shell while retaining `[run]` variables (fish only for now)
  
 # Run variables
 
