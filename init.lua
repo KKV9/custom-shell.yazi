@@ -72,7 +72,7 @@ return {
 
 		-- Execute
 		local exec_string
-		if is_drop then
+		if is_drop and shell_value == "fish" then
 			exec_string = shell_value .. " -C "
 		else
 			exec_string = shell_value .. " -ic "
