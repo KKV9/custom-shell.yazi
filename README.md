@@ -72,11 +72,13 @@ desc = "Blocking echo command with fish"
 
 - Open any shell as your default yazi shell.
 - When shell is set to `auto` or unspecified, will read from $SHELL environment variable.
-- Usage of aliases is supported in most shells.
+- Usage of aliases/abbreviations (interactive mode) is supported by default in fish.
 - Supports default yazi shell arguments `[run]` `--confirm` and `--block`.
 - `[run]` shell variables/positional arguments supported in fish and posix compliant shells. 
 - Fixes some bugs associated with `[run]` variables.
 - Drop to shell while retaining `[run]` variables (fish only for now)
+
+**NOTE:** To use aliases in posix compliant shells use the `--interactive` flag. Currenly work in progress! Will be buggy.
  
 # Run variables
 
