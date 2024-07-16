@@ -82,12 +82,12 @@ desc = "Blocking echo command with fish"
  
 # Run variables
 
-| Variable      | Shells        | Value              |
-| ------------- | ------------- | ------------------ |
-| `$*` or `$@`  | Posix only    | Selected or hovered|
-| `$n`          | Posix only    | n-th Selected      |
-| `$argv`       | Fish only     | Selected or hovered|
-| `$argv[n]`    | Fish only     | n-th Selected      |
-| `$0`          | Posix and fish| Hovered            |
+| Variable      | Shells        | Value                    |
+| ------------- | ------------- | ------------------------ |
+| `$*` or `$@`  | Posix only    | All Selected or Hovered  |
+| `$n`          | Posix only    | n-th Selected            |
+| `$argv`       | Fish only     | All Selected or Hovered  |
+| `$argv[n]`    | Fish only     | n-th Selected            |
+| `$0`          | Posix and fish| 1-st Selected or Hovered |
 
 **NOTE:** Example: `$2` returns second selected file in posix. `$argv[1]` returns first selected file or hovered if nothing is selected in fish.
