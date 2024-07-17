@@ -18,8 +18,8 @@ end)
 return {
 	entry = function(_, args)
 		-- Define vars
-		local shell_value, value_string, is_block, is_confirm, is_orphan, is_interactive, is_drop, is_windows =
-			"", "", false, false, false, false, false, ya.target_os() == "windows"
+		local shell_value, value_string, is_block, is_confirm, is_orphan, is_drop, is_windows =
+			"", "", false, false, false, false, ya.target_os() == "windows"
 
 		if is_windows then
 			shell_value = "powershell"
@@ -35,8 +35,6 @@ return {
 				is_confirm = true
 			elseif item == "--orphan" then
 				is_orphan = true
-			elseif item == "--interactive" then
-				is_interactive = true
 			-- Drop to shell - supports fish only for now
 			elseif item == "--drop" and shell_value == "fish" then
 				is_drop = true
@@ -77,11 +75,7 @@ return {
 		if is_drop and shell_value == "fish" then
 			exec_string = shell_value .. " -C "
 		else
-			if is_interactive or shell_value == "fish" then
-				exec_string = shell_value .. " -ic "
-			else
-				exec_string = shell_value .. " -c "
-			end
+			exec_string = shell_value .. " -i -c "
 		end
 		if shell_value == "fish" then
 			exec_string = exec_string
@@ -105,7 +99,7 @@ return {
 		then
 			exec_string = exec_string
 				.. string.format(
-					'"%s" %s %s',
+					'"%s; exit" %s %s',
 					value:gsub("%$", "\\$"):gsub('"', '\\"'),
 					first_selected_file,
 					selected_files
