@@ -76,7 +76,7 @@ desc = "Blocking echo command with fish"
 - Supports default yazi shell arguments `[run]` `--confirm` and `--block`.
 - `[run]` shell variables/positional arguments supported in fish and posix compliant shells. 
 - Fixes some bugs associated with `[run]` variables.
-- Drop to shell while retaining `[run]` variables (fish only for now)
+- Drop to shell while retaining `[run]` variables (fish only for now).
 
 # Run variables
 
